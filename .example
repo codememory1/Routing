@@ -1,0 +1,67 @@
+<?php
+
+use Codemememory\Routing\Router;
+
+/* Route creation */
+Router::get('/test', 'App.Controllers.Main#test');
+
+
+======================================================
+
+
+/* Routes with names */
+Router::get('/test', 'App.Controllers.Main#test')->name('test');
+
+
+======================================================
+
+
+/* Routes with schemes */
+Router::get('/test', 'App.Controllers.Main#test')->scheme(['http', 'https']);
+
+
+======================================================
+
+
+/* Creating a route group */
+Router::group('/category', function () {
+    Router::get('/car', function (){});
+    Router::get('/phone', function (){});
+
+    Router::group('/add', function () {
+        Router::get('/cat', function (){});
+    });
+});
+
+Router::get('/category/car', function (){});
+Router::get('/category/phone', function (){});
+Router::get('/category/add/cat', function (){});
+
+
+======================================================
+
+
+/* Name group */
+Router::nameGroup('admin.', function () {
+    Router::group('/admin', function () {
+        Router::get('/home', function (){})->name('home');
+
+        Router::nameGroup('posts.', function () {
+            Router::post('/add-category', function (){})->name('add-category');
+        });
+    });
+});
+
+Router::get('/admin/home', function (){})->name('admin.home');
+Router::post('/admin/add-category', function (){})->name('admin.posts.add-category');
+
+
+======================================================
+
+
+/* Route with software */
+Router::get('/test', 'App.Controllers.Main#test')->software(['ClassName:method']);
+
+Router::softwareGroup(['ClassName:method'], function() {
+    Router::get('/test', 'App.Controllers.Main#test');
+});

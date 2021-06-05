@@ -1,0 +1,26 @@
+<?php
+
+namespace {namespace};
+
+use Codememory\Routing\SoftwareAbstract;
+
+/**
+ * Class {className}
+ * @package {namespace}
+ *
+ * @author  Codememory
+ */
+class {className} extends SoftwareAbstract
+{
+
+    /**
+     * @return bool
+     */
+    public function {methodName}(): bool
+    {
+        
+	    return true;
+
+    }
+
+}

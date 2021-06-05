@@ -1,0 +1,6 @@
+routing:
+  configName: routing
+  settings:
+    pathWithRoutes: App/Routing/Routes
+    softwareNamespace: App\Routing\Software
+    routesFileSuffix: '-routes'

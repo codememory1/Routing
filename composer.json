@@ -1,0 +1,30 @@
+{
+    "name": "codememory/routing",
+    "description": "Routing",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Danil",
+            "email": "kostynd1@gmail.com"
+        }
+    ],
+    "require": {
+        "codememory/http-foundation": "2.1",
+        "codememory/global-config": "1.1.1",
+        "codememory/config": "1.1.1",
+        "codememory/service-provider": "1.0.1",
+        "codememory/dependency-injection": "1.0.1",
+        "codememory/support": "1.2.1",
+        "codememory/view": "1.0.1",
+        "codememory/json-parser": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Codememory\\Routing\\": ""
+        },
+        "files": ["helpers.php"]
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.2"
+    }
+}
