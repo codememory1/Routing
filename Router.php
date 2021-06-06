@@ -8,6 +8,7 @@ use Codememory\Routing\Traits\ConstructStaticTrait;
 use Codememory\Support\Str;
 use JetBrains\PhpStorm\Pure;
 use RuntimeException;
+use Generator;
 
 /**
  * Class Router
@@ -253,9 +254,9 @@ class Router implements RouterInterface
 
         self::checkConstructorInitialization();
 
-        self::iterationRoutes(function (Route $route) {
+        foreach (self::iterationRoutes() as $route) {
             self::$statusRouteFound = $route->checkValidityRoute(self::$utils);
-        });
+        }
 
         if (!self::$statusRouteFound) {
             self::$response->setResponseCode(404)->sendHeaders();
@@ -287,13 +288,13 @@ class Router implements RouterInterface
      * Iterate over arrays of all created routes and call callback - handler
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param callable $handler
+     * @return Generator
      */
-    private static function iterationRoutes(callable $handler): void
+    private static function iterationRoutes(): Generator
     {
 
         foreach (self::$routes[self::getRequestMethod()] ?? [] as $route) {
-            call_user_func($handler, $route);
+            yield $route;
 
             if (self::$statusRouteFound) {
                 break;
