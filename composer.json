@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "codememory/http-foundation": "2.1",
+        "codememory/http-foundation": "2.2",
         "codememory/global-config": "1.1.1",
         "codememory/config": "1.1.1",
         "codememory/service-provider": "1.0.1",
@@ -26,5 +26,8 @@
     },
     "require-dev": {
         "symfony/var-dumper": "^5.2"
+    },
+    "config": {
+        "sort-packages": true
     }
 }

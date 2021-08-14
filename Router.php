@@ -6,12 +6,13 @@ use Codememory\Routing\Interfaces\RouteInterface;
 use Codememory\Routing\Interfaces\RouterInterface;
 use Codememory\Routing\Traits\ConstructStaticTrait;
 use Codememory\Support\Str;
+use Generator;
 use JetBrains\PhpStorm\Pure;
 use RuntimeException;
-use Generator;
 
 /**
  * Class Router
+ *
  * @package Codememory\Routing
  *
  * @author  Codememory
@@ -47,6 +48,11 @@ class Router implements RouterInterface
      * @var array
      */
     private static array $software = [];
+
+    /**
+     * @var string|null
+     */
+    private static ?string $subdomain = null;
 
     /**
      * @var bool
@@ -192,6 +198,20 @@ class Router implements RouterInterface
     /**
      * @inheritDoc
      */
+    public static function subdomainGroup(string $subdomain, callable $callback): RouterInterface
+    {
+
+        self::$subdomain = $subdomain;
+
+        call_user_func($callback);
+
+        return new self();
+
+    }
+
+    /**
+     * @inheritDoc
+     */
     public static function routeExist(string $routeName): bool
     {
 
@@ -323,6 +343,11 @@ class Router implements RouterInterface
 
         $pathGenerator = new PathGenerator(self::collectAndGetRoutePath($path));
         $resources = new RouteResources($pathGenerator, $action, $headers, self::$routeNamePrefix, self::$software);
+
+        if (null !== self::$subdomain) {
+            $resources->setSubdomain(self::$subdomain);
+        }
+
         $route = new Route(self::$request, self::$response, $resources);
 
         foreach ($methods as $method) {

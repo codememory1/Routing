@@ -231,6 +231,7 @@ class Route implements RouteInterface
         $this
             ->verifyByRoutePathRegex($routePathRegex)
             ->verifyProtocol()
+            ->verifySubdomain()
             ->verifyHeaders()
             ->verifySoftware($utils);
 

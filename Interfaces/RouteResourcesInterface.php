@@ -69,4 +69,24 @@ interface RouteResourcesInterface
      */
     public function getInputParameters(): ParametersInterface;
 
+    /**
+     * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+     * Set the subdomain on which the route will work
+     * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
+     *
+     * @param string $subdomain
+     *
+     * @return RouteResourcesInterface
+     */
+    public function setSubdomain(string $subdomain): RouteResourcesInterface;
+
+    /**
+     * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+     * Returns the subdomain of the route
+     * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
+     *
+     * @return string|null
+     */
+    public function getSubdomain(): ?string;
+
 }

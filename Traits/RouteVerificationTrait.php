@@ -2,12 +2,12 @@
 
 namespace Codememory\Routing\Traits;
 
-use Codememory\Routing\Route;
 use Codememory\Routing\Software;
 use Codememory\Routing\Utils;
 
 /**
  * Trait RouteVerificationTrait
+ *
  * @package Codememory\Routing\Traits
  *
  * @author  Codememory
@@ -18,9 +18,9 @@ trait RouteVerificationTrait
     /**
      * @param string $routePathRegex
      *
-     * @return RouteVerificationTrait|Route
+     * @return static
      */
-    private function verifyByRoutePathRegex(string $routePathRegex): RouteVerificationTrait|Route
+    private function verifyByRoutePathRegex(string $routePathRegex): static
     {
 
         return $this->performVerification(function () use ($routePathRegex) {
@@ -34,9 +34,9 @@ trait RouteVerificationTrait
     }
 
     /**
-     * @return RouteVerificationTrait|Route
+     * @return static
      */
-    private function verifyProtocol(): RouteVerificationTrait|Route
+    private function verifyProtocol(): static
     {
 
         return $this->performVerification(function () {
@@ -50,9 +50,9 @@ trait RouteVerificationTrait
     }
 
     /**
-     * @return RouteVerificationTrait|Route
+     * @return static
      */
-    private function verifyHeaders(): RouteVerificationTrait|Route
+    private function verifyHeaders(): static
     {
 
         return $this->performVerification(function () {
@@ -73,9 +73,9 @@ trait RouteVerificationTrait
     /**
      * @param Utils $utils
      *
-     * @return RouteVerificationTrait|Route
+     * @return static
      */
-    private function verifySoftware(Utils $utils): RouteVerificationTrait|Route
+    private function verifySoftware(Utils $utils): static
     {
 
         return $this->performVerification(function () use ($utils) {
@@ -87,11 +87,23 @@ trait RouteVerificationTrait
     }
 
     /**
+     * @return static
+     */
+    private function verifySubdomain(): static
+    {
+
+        return $this->performVerification(function () {
+            $this->statusVerifyRoute = $this->request->url->getSubdomain() === $this->getResources()->getSubdomain();
+        });
+
+    }
+
+    /**
      * @param callable $handler
      *
-     * @return RouteVerificationTrait|Route
+     * @return static
      */
-    private function performVerification(callable $handler): RouteVerificationTrait|Route
+    private function performVerification(callable $handler): static
     {
 
         if ($this->statusVerifyRoute || null === $this->statusVerifyRoute) {

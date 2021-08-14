@@ -118,6 +118,18 @@ interface RouterInterface
     public static function softwareGroup(array $software, callable $callback): RouterInterface;
 
     /**
+     * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+     * Add routes that will be available to a specific subdomain
+     * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
+     *
+     * @param string   $subdomain
+     * @param callable $callback
+     *
+     * @return RouterInterface
+     */
+    public static function subdomainGroup(string $subdomain, callable $callback): RouterInterface;
+
+    /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
      * Check for the existence of a route by name, returns
      * a boolean value

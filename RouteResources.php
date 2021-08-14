@@ -43,6 +43,11 @@ class RouteResources implements RouteResourcesInterface
     private array $software;
 
     /**
+     * @var string|null
+     */
+    private ?string $subdomain = null;
+
+    /**
      * RouteResources constructor.
      *
      * @param PathGenerator   $routePath
@@ -123,6 +128,28 @@ class RouteResources implements RouteResourcesInterface
     {
 
         return new InputParameters($this->getPathGenerator()->getPath());
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setSubdomain(string $subdomain): RouteResourcesInterface
+    {
+
+        $this->subdomain = $subdomain;
+
+        return $this;
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSubdomain(): ?string
+    {
+
+        return $this->subdomain;
 
     }
 
