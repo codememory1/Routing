@@ -24,7 +24,9 @@ trait RouteVerificationTrait
     {
 
         return $this->performVerification(function () use ($routePathRegex) {
-            if (preg_match($routePathRegex, $this->request->url->getUrl())) {
+            $url = $this->request->url->removeParameters($this->request->url->getUrl());
+
+            if (preg_match($routePathRegex, $url)) {
                 $this->statusVerifyRoute = true;
             } else {
                 $this->statusVerifyRoute = false;
