@@ -235,28 +235,7 @@ class Route implements RouteInterface
             ->verifyHeaders()
             ->verifySoftware($utils);
 
-        $this->callRouteAction();
-
         return $this->statusVerifyRoute;
-
-    }
-
-    /**
-     * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
-     * Calls a route action handler that will be executed if the
-     * route is the one you were looking for
-     * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
-     *
-     * @return void
-     */
-    private function callRouteAction(): void
-    {
-
-        if ($this->statusVerifyRoute) {
-            $action = new ActionHandler($this->getOutputParameters(), $this->resources);
-
-            $action->performAction();
-        }
 
     }
 

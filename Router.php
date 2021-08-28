@@ -2,6 +2,7 @@
 
 namespace Codememory\Routing;
 
+use Codememory\Routing\Action\ActionHandler;
 use Codememory\Routing\Interfaces\RouteInterface;
 use Codememory\Routing\Interfaces\RouterInterface;
 use Codememory\Routing\Traits\ConstructStaticTrait;
@@ -210,6 +211,8 @@ class Router implements RouterInterface
 
         call_user_func($callback);
 
+        self::$subdomain = null;
+
         return new self();
 
     }
@@ -293,19 +296,18 @@ class Router implements RouterInterface
 
         self::checkConstructorInitialization();
 
+        /** @var Route $route */
         foreach (self::iterationRoutes() as $route) {
             self::$statusRouteFound = $route->checkValidityRoute(self::$utils);
 
-            if(self::$statusRouteFound) {
+            if (self::$statusRouteFound) {
                 self::$openedRoute = $route;
 
                 break;
             }
         }
 
-        if (!self::$statusRouteFound) {
-            self::$response->setResponseCode(404)->sendHeaders();
-        }
+        self::routerResponse();
 
     }
 
@@ -458,6 +460,47 @@ class Router implements RouterInterface
         }
 
         return new self();
+
+    }
+
+    /**
+     * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+     * The router's response is thrown, if the route is found, then the
+     * action will be processed otherwise 404
+     * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
+     *
+     * @return void
+     */
+    private static function routerResponse(): void
+    {
+
+        if (!self::$statusRouteFound) {
+            self::$response->setResponseCode(404)->sendHeaders();
+        } else {
+            self::callRouteAction(self::$statusRouteFound, self::getCurrentRoute());
+        }
+
+    }
+
+    /**
+     * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+     * Calls a route action handler that will be executed if the
+     * route is the one you were looking for
+     * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
+     *
+     * @param bool  $statusVerifyRoute
+     * @param Route $route
+     *
+     * @return void
+     */
+    private static function callRouteAction(bool $statusVerifyRoute, Route $route): void
+    {
+
+        if ($statusVerifyRoute) {
+            $action = new ActionHandler($route->getOutputParameters(), $route->getResources());
+
+            $action->performAction();
+        }
 
     }
 
