@@ -60,6 +60,11 @@ class Router implements RouterInterface
     private static bool $statusRouteFound = false;
 
     /**
+     * @var Route|null
+     */
+    private static ?Route $openedRoute = null;
+
+    /**
      * @return Router
      * @throws Exceptions\ConstructorNotInitializedException
      * @throws Exceptions\IncorrectControllerException
@@ -262,6 +267,20 @@ class Router implements RouterInterface
     }
 
     /**
+     * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+     * Returns the currently open route
+     * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
+     *
+     * @return Route|null
+     */
+    public static function getCurrentRoute(): ?Route
+    {
+
+        return self::$openedRoute;
+
+    }
+
+    /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
      * A method that iterates over all created routes, verifies each route
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
@@ -276,6 +295,12 @@ class Router implements RouterInterface
 
         foreach (self::iterationRoutes() as $route) {
             self::$statusRouteFound = $route->checkValidityRoute(self::$utils);
+
+            if(self::$statusRouteFound) {
+                self::$openedRoute = $route;
+
+                break;
+            }
         }
 
         if (!self::$statusRouteFound) {
