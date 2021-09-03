@@ -9,14 +9,14 @@
         }
     ],
     "require": {
-        "codememory/http-foundation": "2.2",
-        "codememory/global-config": "1.1.1",
-        "codememory/config": "1.1.1",
-        "codememory/service-provider": "1.0.1",
+        "codememory/config": "2.0",
         "codememory/dependency-injection": "1.0.1",
+        "codememory/global-config": "1.1.1",
+        "codememory/http-foundation": "2.2",
+        "codememory/json-parser": "^1.0",
+        "codememory/service-provider": "1.0.1",
         "codememory/support": "1.2.1",
-        "codememory/view": "1.0.1",
-        "codememory/json-parser": "^1.0"
+        "codememory/view": "1.0.1"
     },
     "autoload": {
         "psr-4": {

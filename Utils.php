@@ -2,15 +2,9 @@
 
 namespace Codememory\Routing;
 
-use Codememory\Components\Configuration\Config;
-use Codememory\Components\Configuration\Exceptions\ConfigNotFoundException;
+use Codememory\Components\Configuration\Configuration;
 use Codememory\Components\Configuration\Interfaces\ConfigInterface;
-use Codememory\Components\Environment\Exceptions\EnvironmentVariableNotFoundException;
-use Codememory\Components\Environment\Exceptions\IncorrectPathToEnviException;
-use Codememory\Components\Environment\Exceptions\ParsingErrorException;
-use Codememory\Components\Environment\Exceptions\VariableParsingErrorException;
 use Codememory\Components\GlobalConfig\GlobalConfig;
-use Codememory\FileSystem\Interfaces\FileInterface;
 use Codememory\Routing\Exceptions\IncorrectControllerException;
 use Codememory\Routing\Exceptions\InvalidControllerMethodException;
 use Codememory\Support\Arr;
@@ -18,6 +12,7 @@ use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Class Utils
+ *
  * @package Codememory\Routing
  *
  * @author  Codememory
@@ -32,21 +27,11 @@ class Utils
 
     /**
      * Utils constructor.
-     *
-     * @param FileInterface $filesystem
-     *
-     * @throws ConfigNotFoundException
-     * @throws EnvironmentVariableNotFoundException
-     * @throws IncorrectPathToEnviException
-     * @throws ParsingErrorException
-     * @throws VariableParsingErrorException
      */
-    public function __construct(FileInterface $filesystem)
+    public function __construct()
     {
 
-        $config = new Config($filesystem);
-
-        $this->config = $config->open(GlobalConfig::get('routing.configName'), $this->getDefaultConfig());
+        $this->config = Configuration::getInstance()->open(GlobalConfig::get('routing.configName'), $this->getDefaultConfig());
 
     }
 
