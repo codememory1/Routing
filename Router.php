@@ -139,7 +139,11 @@ class Router implements RouterInterface
     public static function any(string $path, callable|string $action): RouteInterface
     {
 
-        return self::routeCollector($path, ['GET', 'POST', 'FETCH', 'PUT'], $action);
+        return self::routeCollector($path, [
+            'GET', 'POST', 'FETCH',
+            'PUT', 'HEAD', 'PATH',
+            'OPTIONS', 'DELETE'
+        ], $action);
 
     }
 
@@ -160,6 +164,66 @@ class Router implements RouterInterface
     {
 
         return self::routeCollector($path, ['PUT'], $action);
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function head(string $path, callable|string $action): RouteInterface
+    {
+
+        return self::routeCollector($path, ['HEAD'], $action);
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function delete(string $path, callable|string $action): RouteInterface
+    {
+
+        return self::routeCollector($path, ['DELETE'], $action);
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function path(string $path, callable|string $action): RouteInterface
+    {
+
+        return self::routeCollector($path, ['PATH'], $action);
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function options(string $path, callable|string $action): RouteInterface
+    {
+
+        return self::routeCollector($path, ['OPTIONS'], $action);
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function resource(string $path, string $controller, array $methods = [
+        'GET'    => 'show',
+        'POST'   => 'create',
+        'PUT'    => 'update',
+        'DELETE' => 'delete'
+    ]): RouterInterface
+    {
+
+        self::get($path, sprintf('%s#%s', $controller, $methods['GET']));
+        self::post($path, sprintf('%s#%s', $controller, $methods['POST']));
+        self::put($path, sprintf('%s#%s', $controller, $methods['PUT']));
+        self::delete($path, sprintf('%s#%s', $controller, $methods['DELETE']));
+
+        return new self();
 
     }
 

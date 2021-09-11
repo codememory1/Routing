@@ -76,6 +76,73 @@ interface RouterInterface
     public static function put(string $path, callable|string $action): RouteInterface;
 
     /**
+     * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+     * Create a route for the HEAD request method
+     * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
+     *
+     * @param string          $path
+     * @param callable|string $action
+     *
+     * @return RouteInterface
+     */
+    public static function head(string $path, callable|string $action): RouteInterface;
+
+    /**
+     * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+     * Create a route for the DELETE request method
+     * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
+     *
+     * @param string          $path
+     * @param callable|string $action
+     *
+     * @return RouteInterface
+     */
+    public static function delete(string $path, callable|string $action): RouteInterface;
+
+    /**
+     * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+     * Create a route for the PATH request method
+     * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
+     *
+     * @param string          $path
+     * @param callable|string $action
+     *
+     * @return RouteInterface
+     */
+    public static function path(string $path, callable|string $action): RouteInterface;
+
+    /**
+     * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+     * Create a route for the OPTIONS request method
+     * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
+     *
+     * @param string          $path
+     * @param callable|string $action
+     *
+     * @return RouteInterface
+     */
+    public static function options(string $path, callable|string $action): RouteInterface;
+
+    /**
+     * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+     * This method includes 4 request methods. GET, POST, PUT, DELETE and has reserved
+     * methods in the controller, they can be changed with 3 arguments
+     * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
+     *
+     * @param string         $path
+     * @param string         $controller
+     * @param array|string[] $methods
+     *
+     * @return RouterInterface
+     */
+    public static function resource(string $path, string $controller, array $methods = [
+        'GET'    => 'show',
+        'POST'   => 'create',
+        'PUT'    => 'update',
+        'DELETE' => 'delete'
+    ]): RouterInterface;
+
+    /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
      * Create a route group, a prefix is passed as the first
      * argument, a callback is passed as the second with
