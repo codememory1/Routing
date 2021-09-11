@@ -218,10 +218,20 @@ class Router implements RouterInterface
     ]): RouterInterface
     {
 
-        self::get($path, sprintf('%s#%s', $controller, $methods['GET']));
-        self::post($path, sprintf('%s#%s', $controller, $methods['POST']));
-        self::put($path, sprintf('%s#%s', $controller, $methods['PUT']));
-        self::delete($path, sprintf('%s#%s', $controller, $methods['DELETE']));
+        $path = rtrim($path, '/');
+        $pathWithId = sprintf('%s/:id', $path);
+
+        self::get($pathWithId, sprintf('%s#%s', $controller, $methods['GET']))
+            ->with('id', '([0-9]+)?')
+            ->name('get');
+        self::post($path, sprintf('%s#%s', $controller, $methods['POST']))
+            ->name('post');
+        self::put($pathWithId, sprintf('%s#%s', $controller, $methods['PUT']))
+            ->with('id', '[0-9]+')
+            ->name('put');
+        self::delete($pathWithId, sprintf('%s#%s', $controller, $methods['DELETE']))
+            ->with('id', '[0-9]+')
+            ->name('delete');
 
         return new self();
 
