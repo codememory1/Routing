@@ -44,26 +44,26 @@ class PathGenerator implements PathGeneratorInterface
     /**
      * @inheritDoc
      */
-    public function getRegexPath(array $requiredParameters): string
+    public function getRegexPath(array $expectedParameters): string
     {
 
         $routePathParameters = new InputParameters($this->getPath());
 
-        $this->checkRouteParametersInRequired($routePathParameters, $requiredParameters);
+        $this->checkRouteParametersInRequired($routePathParameters, $expectedParameters);
 
-        return $this->generatingPathRegexFromRoutePath($requiredParameters);
+        return $this->generatingPathRegexFromRoutePath($expectedParameters);
 
     }
 
     /**
      * @inheritDoc
      */
-    public function generate(array $parameters = []): string
+    public function generate(array $expectedParameters = []): string
     {
 
         $path = $this->routePath;
 
-        foreach ($parameters as $name => $value) {
+        foreach ($expectedParameters as $name => $value) {
             Str::replace($path, sprintf('%s%s', InputParameters::PARAMETER_START_CHARACTER, $name), $value);
         }
 
@@ -79,18 +79,23 @@ class PathGenerator implements PathGeneratorInterface
      * path based on the regex
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param array $requiredParameters
+     * @param array $expectedParameters
      *
      * @return string
      */
-    private function generatingPathRegexFromRoutePath(array $requiredParameters): string
+    private function generatingPathRegexFromRoutePath(array $expectedParameters): string
     {
 
         $routePathQuote = preg_quote($this->getPath(), '/');
 
-        foreach ($requiredParameters as $name => $regex) {
-            $search = sprintf('\:%s', $name);
-            $replace = sprintf('(?<%s>%s)', $name, $regex);
+        foreach ($expectedParameters as $name => $data) {
+            if($data['required']) {
+                $search = sprintf('\:%s', $name);
+                $replace = sprintf('(?<%s>%s)', $name, $data['regex']);
+            } else {
+                $search = sprintf('\/\:%s', $name);
+                $replace = sprintf('(\/(?<%s>%s))?', $name, $data['regex']);
+            }
 
             Str::replace($routePathQuote, $search, $replace);
         }
@@ -106,14 +111,14 @@ class PathGenerator implements PathGeneratorInterface
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
      * @param InputParameters $routeParameters
-     * @param array           $requiredParameters
+     * @param array           $expectedParameters
      */
-    private function checkRouteParametersInRequired(InputParameters $routeParameters, array &$requiredParameters): void
+    private function checkRouteParametersInRequired(InputParameters $routeParameters, array &$expectedParameters): void
     {
 
         foreach ($routeParameters->all() as $parameterName) {
-            if (!array_key_exists($parameterName, $requiredParameters)) {
-                $requiredParameters[$parameterName] = InputParameters::DEFAULT_PARAMETER_REGEX;
+            if (!array_key_exists($parameterName, $expectedParameters)) {
+                $expectedParameters[$parameterName]['regex'] = InputParameters::DEFAULT_PARAMETER_REGEX;
             }
         }
 

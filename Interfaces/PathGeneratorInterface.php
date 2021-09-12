@@ -26,11 +26,11 @@ interface PathGeneratorInterface
      * you need to pass an array of rules, parameters
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param array $requiredParameters
+     * @param array $expectedParameters
      *
      * @return string
      */
-    public function getRegexPath(array $requiredParameters): string;
+    public function getRegexPath(array $expectedParameters): string;
 
     /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
@@ -39,10 +39,10 @@ interface PathGeneratorInterface
      * value - parameter value
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param array $parameters
+     * @param array $expectedParameters
      *
      * @return string
      */
-    public function generate(array $parameters = []): string;
+    public function generate(array $expectedParameters = []): string;
 
 }

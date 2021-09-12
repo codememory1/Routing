@@ -33,21 +33,21 @@ class OutputParameters implements ParametersInterface
     /**
      * @var array
      */
-    private array $requiredParameters;
+    private array $expectedParameters;
 
     /**
      * OutputParameters constructor.
      *
      * @param PathGeneratorInterface $pathGenerator
      * @param Url                    $url
-     * @param array                  $requiredParameters
+     * @param array                  $expectedParameters
      */
-    public function __construct(PathGeneratorInterface $pathGenerator, Url $url, array $requiredParameters)
+    public function __construct(PathGeneratorInterface $pathGenerator, Url $url, array $expectedParameters)
     {
 
         $this->pathGenerator = $pathGenerator;
         $this->url = $url;
-        $this->requiredParameters = $requiredParameters;
+        $this->expectedParameters = $expectedParameters;
 
     }
 
@@ -57,7 +57,7 @@ class OutputParameters implements ParametersInterface
     public function all(): array
     {
 
-        preg_match($this->pathGenerator->getRegexPath($this->requiredParameters), $this->url->getUrl(), $match);
+        preg_match($this->pathGenerator->getRegexPath($this->expectedParameters), $this->url->getUrl(), $match);
 
         foreach ($match as $name => $value) {
             if (is_int($name)) {

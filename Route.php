@@ -4,13 +4,13 @@ namespace Codememory\Routing;
 
 use Codememory\HttpFoundation\Interfaces\RequestInterface;
 use Codememory\HttpFoundation\Interfaces\ResponseInterface;
-use Codememory\Routing\Action\ActionHandler;
 use Codememory\Routing\Interfaces\RouteInterface;
 use Codememory\Routing\Interfaces\RouteResourcesInterface;
 use Codememory\Routing\Traits\RouteVerificationTrait;
 
 /**
  * Class Route
+ *
  * @package Codememory\Routing
  *
  * @author  Codememory
@@ -84,10 +84,13 @@ class Route implements RouteInterface
     /**
      * @inheritDoc
      */
-    public function with(string $parameterName, string $regex = null): RouteInterface
+    public function with(string $parameterName, string $regex = null, bool $required = true): RouteInterface
     {
 
-        $this->with[$parameterName] = $regex ?: InputParameters::DEFAULT_PARAMETER_REGEX;
+        $this->with[$parameterName] = [
+            'regex'    => $regex ?: InputParameters::DEFAULT_PARAMETER_REGEX,
+            'required' => $required
+        ];
 
         return $this;
 
@@ -166,7 +169,7 @@ class Route implements RouteInterface
     /**
      * @return array
      */
-    public function getRequiredParameters(): array
+    public function getParameters(): array
     {
 
         return $this->with;
@@ -199,7 +202,7 @@ class Route implements RouteInterface
     public function getOutputParameters(): OutputParameters
     {
 
-        return new OutputParameters($this->resources->getPathGenerator(), $this->request->url, $this->getRequiredParameters());
+        return new OutputParameters($this->resources->getPathGenerator(), $this->request->url, $this->getParameters());
 
     }
 
@@ -226,7 +229,7 @@ class Route implements RouteInterface
     public function checkValidityRoute(Utils $utils): bool
     {
 
-        $routePathRegex = $this->resources->getPathGenerator()->getRegexPath($this->getRequiredParameters());
+        $routePathRegex = $this->resources->getPathGenerator()->getRegexPath($this->getParameters());
 
         $this
             ->verifyByRoutePathRegex($routePathRegex)

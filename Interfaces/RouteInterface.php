@@ -19,10 +19,11 @@ interface RouteInterface
      *
      * @param string      $parameterName
      * @param string|null $regex
+     * @param bool        $required
      *
      * @return RouteInterface
      */
-    public function with(string $parameterName, string $regex = null): RouteInterface;
+    public function with(string $parameterName, string $regex = null, bool $required = true): RouteInterface;
 
     /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
