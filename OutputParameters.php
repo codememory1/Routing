@@ -5,6 +5,8 @@ namespace Codememory\Routing;
 use Codememory\HttpFoundation\Client\Url;
 use Codememory\Routing\Interfaces\ParametersInterface;
 use Codememory\Routing\Interfaces\PathGeneratorInterface;
+use Codememory\Support\ConvertType;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
@@ -36,18 +38,25 @@ class OutputParameters implements ParametersInterface
     private array $expectedParameters;
 
     /**
+     * @var ConvertType
+     */
+    private ConvertType $convertType;
+
+    /**
      * OutputParameters constructor.
      *
      * @param PathGeneratorInterface $pathGenerator
      * @param Url                    $url
      * @param array                  $expectedParameters
      */
+    #[Pure]
     public function __construct(PathGeneratorInterface $pathGenerator, Url $url, array $expectedParameters)
     {
 
         $this->pathGenerator = $pathGenerator;
         $this->url = $url;
         $this->expectedParameters = $expectedParameters;
+        $this->convertType = new ConvertType();
 
     }
 
@@ -59,9 +68,11 @@ class OutputParameters implements ParametersInterface
 
         preg_match($this->pathGenerator->getRegexPath($this->expectedParameters), $this->url->getUrl(), $match);
 
-        foreach ($match as $name => $value) {
+        foreach ($match as $name => &$value) {
             if (is_int($name)) {
                 unset($match[$name]);
+            } else {
+                $value = $this->convertType->auto($value);
             }
         }
 
