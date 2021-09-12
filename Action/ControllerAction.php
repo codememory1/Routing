@@ -2,7 +2,6 @@
 
 namespace Codememory\Routing\Action;
 
-use Codememory\Components\Configuration\Exceptions\ConfigNotFoundException;
 use Codememory\Components\Environment\Exceptions\EnvironmentVariableNotFoundException;
 use Codememory\Components\Environment\Exceptions\IncorrectPathToEnviException;
 use Codememory\Components\Environment\Exceptions\ParsingErrorException;
@@ -11,13 +10,12 @@ use Codememory\Components\View\Interfaces\ViewInterface;
 use Codememory\Container\DependencyInjection\Interfaces\DependencyInjectionInterface;
 use Codememory\Container\DependencyInjection\Interfaces\InjectionInterface;
 use Codememory\Container\ServiceProvider\ServiceProvider;
-use Codememory\FileSystem\File;
 use Codememory\Support\Str;
 use Exception;
-use JetBrains\PhpStorm\Pure;
 
 /**
  * Class ControllerAction
+ *
  * @package Codememory\Routing\Action
  *
  * @author  Codememory
@@ -42,7 +40,6 @@ class ControllerAction extends ActionAbstract
     /**
      * @return string
      */
-    #[Pure]
     public function getMethod(): string
     {
 
@@ -54,7 +51,6 @@ class ControllerAction extends ActionAbstract
      * @inheritDoc
      *
      * @return mixed
-     * @throws ConfigNotFoundException
      * @throws EnvironmentVariableNotFoundException
      * @throws IncorrectPathToEnviException
      * @throws ParsingErrorException
@@ -64,7 +60,7 @@ class ControllerAction extends ActionAbstract
     public function call(DependencyInjectionInterface $dependencyInjection): mixed
     {
 
-        $serviceProvider = new ServiceProvider(new File());
+        $serviceProvider = new ServiceProvider();
 
         $id = $this->composeAndGetDependencyId();
 
@@ -82,11 +78,6 @@ class ControllerAction extends ActionAbstract
      * @param mixed $controllerMethodReturn
      *
      * @return mixed
-     * @throws ConfigNotFoundException
-     * @throws EnvironmentVariableNotFoundException
-     * @throws IncorrectPathToEnviException
-     * @throws ParsingErrorException
-     * @throws VariableParsingErrorException
      */
     private function whenMethodReturnsView(mixed $controllerMethodReturn): mixed
     {
