@@ -221,8 +221,9 @@ class Router implements RouterInterface
         $path = rtrim($path, '/');
         $pathWithId = sprintf('%s/:id', $path);
 
-        self::get($path, sprintf('%s#%s', $controller, $methods['GET']))
-            ->name('get');
+        self::get($pathWithId, sprintf('%s#%s', $controller, $methods['GET']))
+            ->name('get')
+            ->with('id', '[0-9]+', false);
         self::post($path, sprintf('%s#%s', $controller, $methods['POST']))
             ->name('post');
         self::put($pathWithId, sprintf('%s#%s', $controller, $methods['PUT']))
