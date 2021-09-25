@@ -2,12 +2,7 @@
 
 namespace Codememory\Routing\Commands;
 
-use Codememory\Components\Configuration\Exceptions\ConfigNotFoundException;
 use Codememory\Components\Console\Command;
-use Codememory\Components\Environment\Exceptions\EnvironmentVariableNotFoundException;
-use Codememory\Components\Environment\Exceptions\IncorrectPathToEnviException;
-use Codememory\Components\Environment\Exceptions\ParsingErrorException;
-use Codememory\Components\Environment\Exceptions\VariableParsingErrorException;
 use Codememory\Components\JsonParser\Exceptions\JsonErrorException;
 use Codememory\Components\JsonParser\JsonParser;
 use Codememory\FileSystem\File;
@@ -22,6 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class MakeSoftwareCommand
+ *
  * @package Codememory\Routing\Commands
  *
  * @author  Codememory
@@ -57,17 +53,12 @@ class MakeSoftwareCommand extends Command
     /**
      * @inheritDoc
      * @throws JsonErrorException
-     * @throws ConfigNotFoundException
-     * @throws EnvironmentVariableNotFoundException
-     * @throws IncorrectPathToEnviException
-     * @throws ParsingErrorException
-     * @throws VariableParsingErrorException
      */
     protected function handler(InputInterface $input, OutputInterface $output): int
     {
 
         $filesystem = new File();
-        $routerUtils = new Utils($filesystem);
+        $routerUtils = new Utils();
 
         $namespaceWithSoftware = rtrim($routerUtils->getBasicSettings()['softwareNamespace'], '\\') . '\\';
         $softwareName = $input->getArgument('name');
@@ -82,7 +73,7 @@ class MakeSoftwareCommand extends Command
                 'If you want to recreate, use the --re-create option'
             ]);
 
-            return Command::FAILURE;
+            return self::FAILURE;
         }
 
         $this->createSoftware(
@@ -93,7 +84,7 @@ class MakeSoftwareCommand extends Command
             $softwarePath
         );
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
 
     }
 
@@ -109,7 +100,7 @@ class MakeSoftwareCommand extends Command
     private function createSoftware(FileInterface $filesystem, string $namespaceWithSoftware, string $softwareName, string $methodName, string $softwarePath): void
     {
 
-        $softwareStub = file_get_contents($filesystem->getRealPath('./Stubs/SoftwareStub.stub'));
+        $softwareStub = file_get_contents(__DIR__ . '/Stubs/SoftwareStub.stub');
 
         Str::replace($softwareStub, [
             '{namespace}', '{className}', '{methodName}'
