@@ -218,22 +218,7 @@ class Router implements RouterInterface
     ]): RouterInterface
     {
 
-        $path = rtrim($path, '/');
-        $pathWithId = sprintf('%s/:id', $path);
-
-        self::get($pathWithId, sprintf('%s#%s', $controller, $methods['GET']))
-            ->name('get')
-            ->with('id', '[0-9]+', false);
-        self::post($path, sprintf('%s#%s', $controller, $methods['POST']))
-            ->name('post');
-        self::put($pathWithId, sprintf('%s#%s', $controller, $methods['PUT']))
-            ->with('id', '[0-9]+')
-            ->name('put');
-        self::delete($pathWithId, sprintf('%s#%s', $controller, $methods['DELETE']))
-            ->with('id', '[0-9]+')
-            ->name('delete');
-
-        return new self();
+        return self::$httpResource->create($path, $controller, $methods);
 
     }
 
@@ -571,9 +556,30 @@ class Router implements RouterInterface
     {
 
         if ($statusVerifyRoute) {
-            $action = new ActionHandler($route->getOutputParameters(), $route->getResources());
+            self::serverResponseHeaders();
 
-            $action->performAction();
+            (new ActionHandler(
+                $route->getOutputParameters(),
+                $route->getResources()
+            ))->performAction();
+        }
+
+    }
+
+    /**
+     * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+     * Send default headers from config
+     * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
+     *
+     * @return void
+     */
+    private static function serverResponseHeaders(): void
+    {
+
+        $headersForResponse = self::$utils->getDefaultHeaders();
+
+        if([] !== $headersForResponse) {
+            self::$response->setHeaders($headersForResponse)->sendHeaders();
         }
 
     }

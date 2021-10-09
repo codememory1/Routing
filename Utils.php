@@ -178,6 +178,16 @@ class Utils
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultHeaders(): array
+    {
+
+        return $this->config->get('defaultHeaders');
+
+    }
+
+    /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
      * Returns a data structure, basic settings that will be returned if
      * the configuration does not exist
@@ -185,13 +195,18 @@ class Utils
      *
      * @return array
      */
-    #[ArrayShape(['_settings' => "mixed", '_routes' => "array"])]
+    #[ArrayShape([
+        '_settings'      => "mixed",
+        'defaultHeaders' => 'array',
+        '_routes'        => "array"
+    ])]
     private function getDefaultConfig(): array
     {
 
         return [
-            '_settings' => GlobalConfig::get('routing.settings'),
-            '_routes'   => []
+            '_settings'      => GlobalConfig::get('routing.settings'),
+            'defaultHeaders' => [],
+            '_routes'        => []
         ];
 
     }

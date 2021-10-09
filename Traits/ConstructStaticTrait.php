@@ -2,11 +2,6 @@
 
 namespace Codememory\Routing\Traits;
 
-use Codememory\Components\Configuration\Exceptions\ConfigNotFoundException;
-use Codememory\Components\Environment\Exceptions\EnvironmentVariableNotFoundException;
-use Codememory\Components\Environment\Exceptions\IncorrectPathToEnviException;
-use Codememory\Components\Environment\Exceptions\ParsingErrorException;
-use Codememory\Components\Environment\Exceptions\VariableParsingErrorException;
 use Codememory\FileSystem\File;
 use Codememory\FileSystem\Interfaces\FileInterface;
 use Codememory\HttpFoundation\Interfaces\RequestInterface;
@@ -14,10 +9,12 @@ use Codememory\HttpFoundation\Interfaces\ResponseInterface;
 use Codememory\HttpFoundation\Response\Response;
 use Codememory\Routing\Exceptions\ConstructorNotInitializedException;
 use Codememory\Routing\Exceptions\SingleConstructorInitializationException;
+use Codememory\Routing\HttpResource;
 use Codememory\Routing\Utils;
 
 /**
  * Trait ConstructStaticTrait
+ *
  * @package Codememory\Routing\Traits
  *
  * @author  Codememory
@@ -51,6 +48,11 @@ trait ConstructStaticTrait
     private static Utils $utils;
 
     /**
+     * @var HttpResource
+     */
+    private static HttpResource $httpResource;
+
+    /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
      * A static constructor that must be called before using any
      * routing methods and must only be called once
@@ -59,11 +61,6 @@ trait ConstructStaticTrait
      * @param RequestInterface $request
      *
      * @throws SingleConstructorInitializationException
-     * @throws ConfigNotFoundException
-     * @throws EnvironmentVariableNotFoundException
-     * @throws IncorrectPathToEnviException
-     * @throws ParsingErrorException
-     * @throws VariableParsingErrorException
      */
     public static function __constructStatic(RequestInterface $request)
     {
@@ -75,7 +72,8 @@ trait ConstructStaticTrait
         self::$request = $request;
         self::$response = new Response(self::$request->header);
         self::$filesystem = new File();
-        self::$utils = new Utils(self::$filesystem);
+        self::$utils = new Utils();
+        self::$httpResource = new HttpResource(new self());
 
         self::scanningAndImportFilesWithRoutes();
 
