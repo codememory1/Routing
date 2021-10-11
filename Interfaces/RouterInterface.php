@@ -129,18 +129,12 @@ interface RouterInterface
      * methods in the controller, they can be changed with 3 arguments
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param string         $path
-     * @param string         $controller
-     * @param array|string[] $methods
+     * @param string $path
+     * @param string $controller
      *
      * @return RouterInterface
      */
-    public static function resource(string $path, string $controller, array $methods = [
-        'GET'    => 'show',
-        'POST'   => 'create',
-        'PUT'    => 'update',
-        'DELETE' => 'delete'
-    ]): RouterInterface;
+    public static function resource(string $path, string $controller): RouterInterface;
 
     /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>

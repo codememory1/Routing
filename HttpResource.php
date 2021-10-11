@@ -32,14 +32,13 @@ class HttpResource
     /**
      * @param string $path
      * @param string $controller
-     * @param array  $methods
      *
      * @return RouterInterface
      */
-    public function create(string $path, string $controller, array $methods): RouterInterface
+    public function create(string $path, string $controller): RouterInterface
     {
 
-        $this->routeCreator($path, $controller, $methods);
+        $this->routeCreator($path, $controller);
 
         return $this->router;
 
@@ -48,23 +47,24 @@ class HttpResource
     /**
      * @param string $path
      * @param string $controller
-     * @param array  $methods
+     *
+     * @return void
      */
-    private function routeCreator(string $path, string $controller, array $methods): void
+    private function routeCreator(string $path, string $controller): void
     {
 
         $path = rtrim($path, '/');
         $pathWithId = sprintf('%s/:id', $path);
 
-        $this->router->get($pathWithId, $this->collectAction($controller, $methods['GET']))
-            ->name('get')
-            ->with('id', '[0-9]+', false);
-        $this->router->post($path, $this->collectAction($controller, $methods['POST']))
-            ->name('post');
-        $this->router->put($pathWithId, $this->collectAction($controller, $methods['PUT']))
+        $this->router->get($path, $this->collectAction($controller, 'all'))->name('all');
+        $this->router->get($pathWithId, $this->collectAction($controller, 'show'))
             ->with('id', '[0-9]+')
-            ->name('put');
-        $this->router->delete($pathWithId, $this->collectAction($controller, $methods['DELETE']))
+            ->name('show');
+        $this->router->post($path, $this->collectAction($controller, 'create'))->name('create');
+        $this->router->put($pathWithId, $this->collectAction($controller, 'update'))
+            ->with('id', '[0-9]+')
+            ->name('update');
+        $this->router->delete($pathWithId, $this->collectAction($controller, 'delete'))
             ->with('id', '[0-9]+')
             ->name('delete');
 

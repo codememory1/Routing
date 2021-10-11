@@ -210,15 +210,10 @@ class Router implements RouterInterface
     /**
      * @inheritDoc
      */
-    public static function resource(string $path, string $controller, array $methods = [
-        'GET'    => 'show',
-        'POST'   => 'create',
-        'PUT'    => 'update',
-        'DELETE' => 'delete'
-    ]): RouterInterface
+    public static function resource(string $path, string $controller): RouterInterface
     {
 
-        return self::$httpResource->create($path, $controller, $methods);
+        return self::$httpResource->create($path, $controller);
 
     }
 
