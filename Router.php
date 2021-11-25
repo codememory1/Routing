@@ -421,7 +421,7 @@ class Router implements RouterInterface
     private static function routeCollector(string $path, array $methods, callable|array $action, array $headers = [], bool $withOptionsMethod = false): RouteInterface
     {
 
-        $action = sprintf('%s#%s', $action[0], $action[1]);
+        $action = [] === $action ? fn () => null : sprintf('%s#%s', $action[0], $action[1]);
         $methods = array_map(fn (string $method) => Str::toUppercase($method), $methods);
 
         $pathGenerator = new PathGenerator(self::collectAndGetRoutePath($path));
