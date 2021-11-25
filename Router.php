@@ -116,27 +116,27 @@ class Router implements RouterInterface
     /**
      * @inheritDoc
      */
-    public static function get(string $path, callable|string $action): RouteInterface
+    public static function get(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface
     {
 
-        return self::routeCollector($path, ['GET'], $action);
+        return self::routeCollector($path, ['GET'], $action, [], $withOptionsMethod);
 
     }
 
     /**
      * @inheritDoc
      */
-    public static function post(string $path, callable|string $action): RouteInterface
+    public static function post(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface
     {
 
-        return self::routeCollector($path, ['POST'], $action);
+        return self::routeCollector($path, ['POST'], $action, [], $withOptionsMethod);
 
     }
 
     /**
      * @inheritDoc
      */
-    public static function any(string $path, callable|string $action): RouteInterface
+    public static function any(string $path, callable|array $action): RouteInterface
     {
 
         return self::routeCollector($path, [
@@ -150,57 +150,57 @@ class Router implements RouterInterface
     /**
      * @inheritDoc
      */
-    public static function fetch(string $path, callable|string $action): RouteInterface
+    public static function fetch(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface
     {
 
-        return self::routeCollector($path, ['FETCH'], $action, ['X-Requested-With' => 'XMLHttpRequest']);
+        return self::routeCollector($path, ['FETCH'], $action, ['X-Requested-With' => 'XMLHttpRequest'], $withOptionsMethod);
 
     }
 
     /**
      * @inheritDoc
      */
-    public static function put(string $path, callable|string $action): RouteInterface
+    public static function put(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface
     {
 
-        return self::routeCollector($path, ['PUT'], $action);
+        return self::routeCollector($path, ['PUT'], $action, [], $withOptionsMethod);
 
     }
 
     /**
      * @inheritDoc
      */
-    public static function head(string $path, callable|string $action): RouteInterface
+    public static function head(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface
     {
 
-        return self::routeCollector($path, ['HEAD'], $action);
+        return self::routeCollector($path, ['HEAD'], $action, [], $withOptionsMethod);
 
     }
 
     /**
      * @inheritDoc
      */
-    public static function delete(string $path, callable|string $action): RouteInterface
+    public static function delete(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface
     {
 
-        return self::routeCollector($path, ['DELETE'], $action);
+        return self::routeCollector($path, ['DELETE'], $action, [], $withOptionsMethod);
 
     }
 
     /**
      * @inheritDoc
      */
-    public static function path(string $path, callable|string $action): RouteInterface
+    public static function path(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface
     {
 
-        return self::routeCollector($path, ['PATH'], $action);
+        return self::routeCollector($path, ['PATH'], $action, [], $withOptionsMethod);
 
     }
 
     /**
      * @inheritDoc
      */
-    public static function options(string $path, callable|string $action): RouteInterface
+    public static function options(string $path, callable|array $action = [], bool $withOptionsMethod = false): RouteInterface
     {
 
         return self::routeCollector($path, ['OPTIONS'], $action);
@@ -410,16 +410,18 @@ class Router implements RouterInterface
      * the created object of the created route is added to the array
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param string          $path
-     * @param array           $methods
-     * @param callable|string $action
-     * @param array           $headers
+     * @param string         $path
+     * @param array          $methods
+     * @param callable|array $action
+     * @param array          $headers
+     * @param bool           $withOptionsMethod
      *
      * @return RouteInterface
      */
-    private static function routeCollector(string $path, array $methods, callable|string $action, array $headers = []): RouteInterface
+    private static function routeCollector(string $path, array $methods, callable|array $action, array $headers = [], bool $withOptionsMethod = false): RouteInterface
     {
 
+        $action = sprintf('%s#%s', $action[0], $action[1]);
         $methods = array_map(fn (string $method) => Str::toUppercase($method), $methods);
 
         $pathGenerator = new PathGenerator(self::collectAndGetRoutePath($path));
@@ -435,6 +437,10 @@ class Router implements RouterInterface
             $route->setMethod($method);
 
             self::$routes[$method][] = $route;
+        }
+
+        if($withOptionsMethod) {
+            self::options($path);
         }
 
         return $route;

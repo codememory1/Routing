@@ -68,12 +68,8 @@ class HttpResource
             ->with('id', '[0-9]+')
             ->name('delete');
 
-        $this->router->options($path, function () {
-            // No action for this request method
-        });
-        $this->router->options($pathWithId, function () {
-            // No action for this request method
-        });
+        $this->router->options($path);
+        $this->router->options($pathWithId);
 
     }
 

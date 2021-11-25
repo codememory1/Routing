@@ -20,108 +20,115 @@ interface RouterInterface
      * the method is example: App.Controllers.Main # method
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param string          $path
-     * @param callable|string $action
+     * @param string         $path
+     * @param callable|array $action
+     * @param bool           $withOptionsMethod
      *
      * @return RouteInterface
      */
-    public static function get(string $path, callable|string $action): RouteInterface;
+    public static function get(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface;
 
     /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
      * Create a route for the POST request method
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param string          $path
-     * @param callable|string $action
+     * @param string         $path
+     * @param callable|array $action
+     * @param bool           $withOptionsMethod
      *
      * @return RouteInterface
      */
-    public static function post(string $path, callable|string $action): RouteInterface;
+    public static function post(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface;
 
     /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
      * Create a route with any request method GET|POST|FETCH|PUT
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param string          $path
-     * @param callable|string $action
+     * @param string         $path
+     * @param callable|array $action
      *
      * @return RouteInterface
      */
-    public static function any(string $path, callable|string $action): RouteInterface;
+    public static function any(string $path, callable|array $action): RouteInterface;
 
     /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
      * Create a route for the FETCH request method
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param string          $path
-     * @param callable|string $action
+     * @param string         $path
+     * @param callable|array $action
+     * @param bool           $withOptionsMethod
      *
      * @return RouteInterface
      */
-    public static function fetch(string $path, callable|string $action): RouteInterface;
+    public static function fetch(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface;
 
     /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
      * Create a route for the PUT request method
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param string          $path
-     * @param callable|string $action
+     * @param string         $path
+     * @param callable|array $action
+     * @param bool           $withOptionsMethod
      *
      * @return RouteInterface
      */
-    public static function put(string $path, callable|string $action): RouteInterface;
+    public static function put(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface;
 
     /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
      * Create a route for the HEAD request method
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param string          $path
-     * @param callable|string $action
+     * @param string         $path
+     * @param callable|array $action
+     * @param bool           $withOptionsMethod
      *
      * @return RouteInterface
      */
-    public static function head(string $path, callable|string $action): RouteInterface;
+    public static function head(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface;
 
     /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
      * Create a route for the DELETE request method
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param string          $path
-     * @param callable|string $action
+     * @param string         $path
+     * @param callable|array $action
+     * @param bool           $withOptionsMethod
      *
      * @return RouteInterface
      */
-    public static function delete(string $path, callable|string $action): RouteInterface;
+    public static function delete(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface;
 
     /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
      * Create a route for the PATH request method
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param string          $path
-     * @param callable|string $action
+     * @param string         $path
+     * @param callable|array $action
+     * @param bool           $withOptionsMethod
      *
      * @return RouteInterface
      */
-    public static function path(string $path, callable|string $action): RouteInterface;
+    public static function path(string $path, callable|array $action, bool $withOptionsMethod = false): RouteInterface;
 
     /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
      * Create a route for the OPTIONS request method
      * <=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=<=
      *
-     * @param string          $path
-     * @param callable|string $action
+     * @param string         $path
+     * @param callable|array $action
      *
      * @return RouteInterface
      */
-    public static function options(string $path, callable|string $action): RouteInterface;
+    public static function options(string $path, callable|array $action = []): RouteInterface;
 
     /**
      * =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
