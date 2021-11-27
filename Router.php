@@ -86,10 +86,12 @@ class Router implements RouterInterface
 
         foreach ($routes as $routeName => $routeData) {
             $method = Str::toLowercase($routeData['method']);
-            $action = $routeData['class']['controller'] . '#' . $routeData['class']['method'];
             $software = [];
 
-            $route = self::$method($routeData['path'], $action)->name($routeName);
+            $route = self::$method($routeData['path'], [
+                $routeData['class']['controller'],
+                $routeData['class']['method']
+            ])->name($routeName);
 
             foreach ($routeData['parameters'] as $parameterName => $regex) {
                 $route->with($parameterName, $regex);
