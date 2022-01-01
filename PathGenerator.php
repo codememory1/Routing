@@ -89,7 +89,7 @@ class PathGenerator implements PathGeneratorInterface
         $routePathQuote = preg_quote($this->getPath(), '/');
 
         foreach ($expectedParameters as $name => $data) {
-            if($data['required']) {
+            if(array_key_exists('required', $data) && $data['required']) {
                 $search = sprintf('\:%s', $name);
                 $replace = sprintf('(?<%s>%s)', $name, $data['regex']);
             } else {
