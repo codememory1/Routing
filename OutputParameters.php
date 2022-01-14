@@ -66,7 +66,11 @@ class OutputParameters implements ParametersInterface
     public function all(): array
     {
 
-        preg_match($this->pathGenerator->getRegexPath($this->expectedParameters), $this->url->getUrl(), $match);
+        preg_match(
+            $this->pathGenerator->getRegexPath($this->expectedParameters),
+            $this->url->removeParameters($this->url->getUrl()),
+            $match
+        );
 
         foreach ($match as $name => &$value) {
             if (is_int($name)) {
